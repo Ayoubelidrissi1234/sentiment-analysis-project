@@ -1,0 +1,33 @@
+# Fiche de cadrage : Ordonnances incomplètes en pharmacie
+
+## Besoin en une phrase
+Détecter automatiquement les ordonnances manquantes d'informations essentielles pour prévenir les erreurs de délivrance et protéger la santé des patients.
+
+## Utilisateur final
+Les pharmaciens et leur équipe qui traitent chaque jour des centaines d'ordonnances et veulent un contrôle fiable sans ralentir leur travail.
+
+## Données nécessaires
+Ordonnances numérisées, base des médicaments autorisés, fiches patients, historique des ordonnances validées ou rejetées.
+
+## Approche retenue
+Cocher une seule case :
+
+- [ ] Règles métier
+- [x] Machine learning
+- [ ] RAG
+- [ ] Modèle génératif seul
+
+## Justification
+(a) Nous disposons de nombreuses ordonnances déjà annotées, (c) les règles métier deviendraient trop nombreuses et complexes à maintenir.
+
+## Métrique de succès
+Taux de détection supérieur à 95 %, taux de fausses alertes inférieur à 3 %.
+
+## Conséquence d'une erreur
+Faux positif : perte de temps pour l'équipe ; Faux négatif : risque pour la santé du patient.
+
+## Risques éthiques ou de confidentialité
+Protéger strictement les données de santé ; garantir un traitement égal pour tous les patients.
+
+## Approche écartée et pourquoi
+Les règles métier ont été écartées car (c) leur maintenance devient trop lourde quand le volume augmente.
