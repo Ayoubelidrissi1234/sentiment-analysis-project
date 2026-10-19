@@ -75,3 +75,5 @@ sentiment-app/
 | Membre B | [Nom 2] | [@login] | |
 
 - Second membre : Nom Binome
+
+- Second membre : Ayoub Elidrissi
