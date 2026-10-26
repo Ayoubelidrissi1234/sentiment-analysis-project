@@ -1,30 +1,36 @@
-﻿# Fiche de cadrage : Questions sur le règlement intérieur
+# Fiche de cadrage : Questions sur le règlement intérieur
 
-## Besoin en une phrase
-Répondre précisément aux questions des salariés sans déformer les règles officielles.
+> Remplir chaque rubrique en une à trois phrases. Les rubriques marquées (obligatoire) sont vérifiées par `pytest`.
 
-## Utilisateur final
-Salariés, managers et service des ressources humaines.
+## Besoin en une phrase (obligatoire)
 
-## Données nécessaires
-Texte du règlement, conventions collectives, procédures validées.
 
-## Approche retenue
+## Utilisateur final (obligatoire)
+
+
+## Approche retenue (obligatoire)
+
 Cocher une seule case :
 
 - [ ] Règles métier
 - [ ] Machine learning
-- [x] RAG
+- [ ] RAG
 - [ ] Modèle génératif seul
 
-## Justification
-(b) Les réponses doivent être vérifiables, (d) une erreur pourrait causer un préjudice juridique.
+## Justification (obligatoire, citer au moins deux critères de la grille : (a) données étiquetées, (b) vérifiabilité, (c) coût par requête, (d) conséquence d'une erreur)
 
-## Métrique de succès
-Conformité aux textes à 100 %, source indiquée systématiquement.
 
-## Conséquence d'une erreur
-Information fausse = conflit social ou risque juridique pour l'entreprise.
+## Données nécessaires et leur origine (obligatoire)
 
-## Risques éthiques
-Ne pas inventer de règles ; garantir l'égalité entre tous les salariés.
+
+## Métrique de succès et seuil d'acceptation (obligatoire)
+
+
+## Conséquence d'une erreur et validation humaine prévue (obligatoire)
+
+
+## Risques éthiques ou de confidentialité (obligatoire)
+
+
+## Approche écartée et pourquoi (facultatif)
+

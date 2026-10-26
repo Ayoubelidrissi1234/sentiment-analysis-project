@@ -1,30 +1,36 @@
-﻿# Fiche de cadrage : Ordonnances incomplètes en pharmacie
+# Fiche de cadrage : Ordonnances incomplètes en pharmacie
 
-## Besoin en une phrase
-Détecter automatiquement les ordonnances manquantes d'informations essentielles pour prévenir les erreurs de délivrance.
+> Remplir chaque rubrique en une à trois phrases. Les rubriques marquées (obligatoire) sont vérifiées par `pytest`.
 
-## Utilisateur final
-Les pharmaciens et leur équipe qui traitent chaque jour des centaines d'ordonnances.
+## Besoin en une phrase (obligatoire)
 
-## Données nécessaires
-Ordonnances numérisées, base des médicaments autorisés, fiches patients, historique des ordonnances validées.
 
-## Approche retenue
+## Utilisateur final (obligatoire)
+
+
+## Approche retenue (obligatoire)
+
 Cocher une seule case :
 
 - [ ] Règles métier
-- [x] Machine learning
+- [ ] Machine learning
 - [ ] RAG
 - [ ] Modèle génératif seul
 
-## Justification
-(a) Nous disposons de nombreuses données déjà annotées, (c) les règles métier deviendraient trop complexes à maintenir.
+## Justification (obligatoire, citer au moins deux critères de la grille : (a) données étiquetées, (b) vérifiabilité, (c) coût par requête, (d) conséquence d'une erreur)
 
-## Métrique de succès
-Taux de détection supérieur à 95 %, taux de fausses alertes inférieur à 3 %.
 
-## Conséquence d'une erreur
-Faux positif = perte de temps pour l'équipe ; Faux négatif = risque pour la santé du patient.
+## Données nécessaires et leur origine (obligatoire)
 
-## Risques éthiques
-Protéger strictement les données de santé des patients ; garantir l'égalité de traitement.
+
+## Métrique de succès et seuil d'acceptation (obligatoire)
+
+
+## Conséquence d'une erreur et validation humaine prévue (obligatoire)
+
+
+## Risques éthiques ou de confidentialité (obligatoire)
+
+
+## Approche écartée et pourquoi (facultatif)
+
