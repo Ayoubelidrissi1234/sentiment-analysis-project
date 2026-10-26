@@ -1,6 +1,6 @@
-# Fiche de cadrage : Ordonnances incomplètes en pharmacie
+﻿# Fiche de cadrage : Ordonnances incomplÃ¨tes en pharmacie
 
-> Remplir chaque rubrique en une à trois phrases. Les rubriques marquées (obligatoire) sont vérifiées par `pytest`.
+> Remplir chaque rubrique en une Ã  trois phrases. Les rubriques marquÃ©es (obligatoire) sont vÃ©rifiÃ©es par `pytest`.
 
 ## Besoin en une phrase (obligatoire)
 
@@ -12,25 +12,26 @@
 
 Cocher une seule case :
 
-- [ ] Règles métier
+- [ ] RÃ¨gles mÃ©tier
 - [ ] Machine learning
 - [ ] RAG
-- [ ] Modèle génératif seul
+- [ ] ModÃ¨le gÃ©nÃ©ratif seul
 
-## Justification (obligatoire, citer au moins deux critères de la grille : (a) données étiquetées, (b) vérifiabilité, (c) coût par requête, (d) conséquence d'une erreur)
-
-
-## Données nécessaires et leur origine (obligatoire)
+## Justification (obligatoire, citer au moins deux critÃ¨res de la grille : (a) donnÃ©es Ã©tiquetÃ©es, (b) vÃ©rifiabilitÃ©, (c) coÃ»t par requÃªte, (d) consÃ©quence d'une erreur)
 
 
-## Métrique de succès et seuil d'acceptation (obligatoire)
+## DonnÃ©es nÃ©cessaires et leur origine (obligatoire)
 
 
-## Conséquence d'une erreur et validation humaine prévue (obligatoire)
+## MÃ©trique de succÃ¨s et seuil d'acceptation (obligatoire)
 
 
-## Risques éthiques ou de confidentialité (obligatoire)
+## ConsÃ©quence d'une erreur et validation humaine prÃ©vue (obligatoire)
 
 
-## Approche écartée et pourquoi (facultatif)
+## Risques Ã©thiques ou de confidentialitÃ© (obligatoire)
+
+
+## Approche Ã©cartÃ©e et pourquoi (facultatif)
+
 
