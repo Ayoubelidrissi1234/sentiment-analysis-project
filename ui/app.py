@@ -1,94 +1,115 @@
-"""Interface de démonstration du classifieur de sentiment.
-
-Usage : streamlit run ui/app.py
-Prérequis : models/sentiment.joblib, produit par python src/train.py (TP2).
-"""
-from pathlib import Path
-
-import pandas as pd
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+from sklearn.datasets import load_iris, load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-from helpers import charger_predicteur, classer, predire_lot, resumer
+# ---------- Configuration de la page (toujours en premier) ----------
+st.set_page_config(page_title="Classifieur intelligent", layout="wide")
+st.title("Application intelligente : classification interactive")
 
-RACINE = Path(__file__).resolve().parents[1]
+# ---------- Barre latérale : les réglages de l'utilisateur ----------
+st.sidebar.header("Configuration")
+jeu = st.sidebar.selectbox("Jeu de données", ["Iris", "Wine"])
+algo = st.sidebar.selectbox("Modèle", ["Random Forest", "Régression logistique", "KNN"])
+test_size = st.sidebar.slider("Part de test", 0.1, 0.5, 0.2, 0.05)
 
-st.set_page_config(page_title="Analyse de sentiment", page_icon="💬", layout="wide")
-st.title("Analyse de sentiment des avis clients")
-st.caption("Modèle entraîné en TP2 · interface de démonstration · fil rouge du cours")
+params = {}
+if algo == "Random Forest":
+    params["n"] = st.sidebar.slider("Nombre d'arbres", 10, 300, 100, 10)
+    params["d"] = st.sidebar.slider("Profondeur max", 1, 20, 5)
+elif algo == "KNN":
+    params["k"] = st.sidebar.slider("Nombre de voisins (k)", 1, 25, 5)
 
+if st.sidebar.button("Vider le cache"):
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.rerun()
 
+# ---------- Données : mises en cache ----------
+@st.cache_data
+def charger(nom):
+    data = load_iris() if nom == "Iris" else load_wine()
+    X = pd.DataFrame(data.data, columns=data.feature_names)
+    y = pd.Series(data.target, name="classe")
+    return X, y, list(data.target_names)
+
+# ---------- Modèle : mis en cache ----------
 @st.cache_resource
-def predicteur():
-    """Chargé une seule fois, pas à chaque interaction."""
-    return charger_predicteur()
+def entrainer(jeu, algo, test_size, n=None, d=None, k=None):
+    X, y, _ = charger(jeu)
+    X_tr, X_te, y_tr, y_te = train_test_split(
+        X, y, test_size=test_size, random_state=42, stratify=y)
+    if algo == "Random Forest":
+        m = RandomForestClassifier(n_estimators=n, max_depth=d, random_state=42)
+    elif algo == "Régression logistique":
+        m = LogisticRegression(max_iter=2000)
+    else:
+        m = KNeighborsClassifier(n_neighbors=k)
+    m.fit(X_tr, y_tr)
+    return m, X_te, y_te
 
+X, y, noms_classes = charger(jeu)
+modele, X_te, y_te = entrainer(jeu, algo, test_size,
+                               params.get("n"), params.get("d"), params.get("k"))
+y_pred = modele.predict(X_te)
+acc = accuracy_score(y_te, y_pred)
+df_aff = X.assign(classe=y.map(dict(enumerate(noms_classes))))
 
-try:
-    predire = predicteur()
-except FileNotFoundError as erreur:
-    st.error(str(erreur))
-    st.info("Dans un terminal, à la racine du dépôt : `python src/train.py --allocine`")
-    st.stop()
+# ---------- Trois onglets ----------
+tab1, tab2, tab3 = st.tabs(["Données", "Performance", "Prédiction"])
 
-onglet_avis, onglet_lot, onglet_aide = st.tabs(["Un avis", "Un fichier CSV", "Comment ça marche"])
+with tab1:
+    st.subheader(f"Jeu de données {jeu}")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Observations", X.shape[0])
+    c2.metric("Variables", X.shape[1])
+    c3.metric("Classes", len(noms_classes))
+    st.dataframe(df_aff.head(20), use_container_width=True)
 
-with onglet_avis:
-    texte = st.text_area("Avis à analyser", "Livraison rapide, produit conforme.", height=130)
-    if st.button("Analyser", type="primary"):
-        if not texte.strip():
-            st.warning("Saisissez un avis.")
-        else:
-            r = classer(texte, predire)
-            colonne_verdict, colonne_score = st.columns([2, 1])
-            with colonne_verdict:
-                if r["incertain"]:
-                    st.warning(f"À vérifier par un agent (penche vers « {r['label']} »)")
-                elif r["label"] == "negative":
-                    st.error("Avis négatif : à traiter en priorité")
-                else:
-                    st.success("Avis positif")
-            with colonne_score:
-                st.metric("Confiance", f"{r['score']:.0%}")
-            st.progress(float(r["score"]))
+    st.subheader("Nuage de points")
+    col_x = st.selectbox("Axe X", X.columns, index=0)
+    col_y = st.selectbox("Axe Y", X.columns, index=1)
+    st.plotly_chart(px.scatter(df_aff, x=col_x, y=col_y, color="classe", height=450),
+                    use_container_width=True)
 
-with onglet_lot:
-    st.write("Fichier CSV contenant une colonne `review`. Exemple fourni : `data/sample_reviews.csv`.")
-    fichier = st.file_uploader("Choisir un fichier", type="csv")
-    if fichier is not None:
-        try:
-            df = predire_lot(pd.read_csv(fichier), predire)
-        except (KeyError, ValueError) as erreur:
-            st.error(str(erreur))
-        else:
-            r = resumer(df)
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Avis analysés", r["total"])
-            c2.metric("Négatifs détectés", f"{r['negatifs']} ({r['part_negatifs']} %)")
-            c3.metric("À vérifier", r["a_verifier"])
-            st.bar_chart(df["prediction"].value_counts())
-            st.dataframe(
-                df.sort_values(["prediction", "confiance"], ascending=[True, False]),
-                use_container_width=True,
-            )
-            st.download_button(
-                "Télécharger les résultats",
-                df.to_csv(index=False).encode("utf-8"),
-                "resultats.csv",
-                "text/csv",
-            )
+with tab2:
+    st.subheader(f"Modèle : {algo}")
+    st.metric("Exactitude (test)", f"{acc:.1%}")
 
-with onglet_aide:
-    st.markdown(
-        """
-**Ce que fait cette interface.** Elle charge le modèle produit au TP2 et appelle sa fonction
-`predict()`, la même que celle qu'utilisera l'API. Aucune logique de prédiction n'est dupliquée ici.
+    cm = confusion_matrix(y_te, y_pred)
+    st.plotly_chart(px.imshow(cm, text_auto=True, x=noms_classes, y=noms_classes,
+                              labels=dict(x="Prédit", y="Réel"),
+                              color_continuous_scale="Blues",
+                              title="Matrice de confusion"),
+                    use_container_width=True)
 
-**Le seuil d'incertitude.** En dessous de 60 % de confiance, la prédiction est affichée comme
-« à vérifier » plutôt que tranchée. Un modèle qui hésite doit le dire : c'est ce qui permet à un
-agent de reprendre la main, comme prévu dans la fiche de cadrage du cas 3.
+    with st.expander("Rapport de classification détaillé"):
+        st.text(classification_report(y_te, y_pred, target_names=noms_classes))
 
-**Ce que l'interface n'est pas.** Une démonstration, pas l'application. Elle sert à montrer le
-modèle, à récolter des retours et à faire apparaître les cas où il se trompe. L'API, elle, sera
-appelée par d'autres programmes.
-        """
-    )
+    if algo == "Random Forest":
+        imp = pd.Series(modele.feature_importances_, index=X.columns).sort_values()
+        st.plotly_chart(px.bar(imp, orientation="h", title="Importance des variables"),
+                        use_container_width=True)
+
+with tab3:
+    st.subheader("Prédire une nouvelle observation")
+    cols = st.columns(2)
+    valeurs = {}
+    for i, c in enumerate(X.columns):
+        valeurs[c] = cols[i % 2].slider(
+            c, float(X[c].min()), float(X[c].max()), float(X[c].mean()), key=f"{jeu}_{c}")
+
+    obs = pd.DataFrame([valeurs])
+    pred = modele.predict(obs)[0]
+    st.success(f"Classe prédite : **{noms_classes[pred]}**")
+
+    if hasattr(modele, "predict_proba"):
+        proba = pd.Series(modele.predict_proba(obs)[0], index=noms_classes)
+        st.plotly_chart(px.bar(proba, title="Probabilités par classe", range_y=[0, 1]),
+                        use_container_width=True)
