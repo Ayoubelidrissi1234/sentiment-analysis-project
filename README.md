@@ -71,5 +71,5 @@ sentiment-app/
 
 | Rôle | Nom | Identifiant GitHub | Travail de la semaine 1 |
 | --- | --- | --- | --- |
-| Membre A | [Ayoub elidrissi] | [@login] | |
-| Membre B | [Ayman aitmansour] | [@login] | |
+| Membre A | [Ayoub elidrissi] | [elidrissiayoub285@gmail.com] | |
+| Membre B | [Ayman aitmansour] | [aymanaitmansour86@gmail.com] | |
