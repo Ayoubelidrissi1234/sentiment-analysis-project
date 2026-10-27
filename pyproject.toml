@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentiment_app"
+version = "0.6.0"
+description = "Application d'analyse de sentiment"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "scikit-learn",
+    "pandas",
+    "joblib",
+    "streamlit",
+    "click",
+]
+
+[project.scripts]
+sentiment = "sentiment_app.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sentiment_app*"]
