@@ -21,7 +21,7 @@ def charger_predicteur():
             "models/sentiment.joblib absent : lancez d'abord python src/train.py"
         )
     sys.path.insert(0, str(RACINE / "src"))
-    from predict import predict  # noqa: E402  (import tardif : le modèle doit exister)
+    from predict import predict
     return predict
 
 

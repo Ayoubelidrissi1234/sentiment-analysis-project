@@ -1,7 +1,8 @@
-﻿import streamlit as st
+﻿import re
+
 import joblib
-import re
 import nltk
+import streamlit as st
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 

@@ -1,5 +1,6 @@
-import joblib
 from pathlib import Path
+
+import joblib
 
 MODELE = Path(__file__).resolve().parent.parent / "models" / "sentiment.joblib"
 _pipeline = None

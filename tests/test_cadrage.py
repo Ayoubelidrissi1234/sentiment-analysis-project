@@ -23,7 +23,7 @@ def fiches(cadrage_dir: Path):
 
 def section_body(text: str, title: str) -> str:
     """Renvoie le texte entre le titre '## <title>...' et le titre suivant."""
-    pattern = re.compile(rf"^## {re.escape(title)}.*?$\n(.*?)(?=^## |\Z)", re.M | re.S)
+    pattern = re.compile(rf"^## {re.escape(title)}.*?$\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL)
     m = pattern.search(text)
     return m.group(1).strip() if m else ""
 

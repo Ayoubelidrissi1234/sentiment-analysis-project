@@ -1,13 +1,12 @@
-import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
+import streamlit as st
 from sklearn.datasets import load_iris, load_wine
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # ---------- Configuration de la page (toujours en premier) ----------
 st.set_page_config(page_title="Classifieur intelligent", layout="wide")

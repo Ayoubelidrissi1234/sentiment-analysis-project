@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+
+from api.model import charger_modele, predict
 from api.schemas import PredictionRequest, PredictionResponse
-from api.model import predict, charger_modele
 
 app = FastAPI(title="API Sentiment")
 
