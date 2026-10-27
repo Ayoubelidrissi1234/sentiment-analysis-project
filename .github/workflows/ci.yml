@@ -5,12 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }          # tout l'historique : git shortlog compte les deux auteurs
+        with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
-      - name: Environnement virtuel et dépendances
-        run: run: python -m venv .venv && . .venv/bin/activate && pip install pandas scikit-learn pytest fastapi uvicorn joblib streamlit click
-      - name: Diagnostic
-        run: . .venv/bin/activate && python scripts/check_setup.py
+      - name: Install dependencies
+        run: pip install pandas scikit-learn pytest fastapi uvicorn joblib streamlit click
       - name: Tests
-        run: . .venv/bin/activate && pytest -q
+        run: pytest -q
